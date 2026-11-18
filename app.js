@@ -59,7 +59,7 @@ function drawSegment(from, to) {
   ctx.globalAlpha = t.alpha;
   ctx.lineWidth = sizeInput.value * t.mult;
   ctx.strokeStyle = colorInput.value;
-
+  ctx.globalCompositeOperation = tool === 'eraser' ? 'destination-out' : 'source-over';
   ctx.beginPath();
   ctx.moveTo(from.x, from.y);
   ctx.lineTo(to.x, to.y);
