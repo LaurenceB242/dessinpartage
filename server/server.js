@@ -8,9 +8,12 @@ wss.on('connection', (ws) => {
 
   ws.on('message', (data) => {
     
-    // À VOUS : renvoyer `data.toString()` à tous les clients de wss.clients
-    // SAUF celui qui l'a envoyé (ws), et seulement si
-    // client.readyState === WebSocket.OPEN
+    const text = data.toString();
+    for (const client of wss.clients) {
+        if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(text);
+        }
+    }
   });
 
   ws.on('close', () => console.log('Client parti'));
