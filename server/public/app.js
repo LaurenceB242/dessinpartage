@@ -1,4 +1,12 @@
-const socket = new WebSocket(`ws://${location.hostname}:8080`);
+const protocol = location.protocol === 'https:' ? 'wss' : 'ws';
+const socket = new WebSocket(`${protocol}://${location.host}`);
+
+function send(message) {
+  if (socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify(message));
+  }
+}
+
 const canvas = document.getElementById('board');
 const ctx = canvas.getContext('2d');
 
@@ -106,3 +114,4 @@ canvas.addEventListener('pointermove', (e) => {
 
 canvas.addEventListener('pointerup', () => { drawing = false; });
 canvas.addEventListener('pointercancel', () => { drawing = false; });
+

@@ -55,6 +55,24 @@ canvas {
   background: #fff;
 }
 
+#status {
+  position: absolute;
+  top: 8px; right: 8px;
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px;
+  background: rgba(255,255,255,.9);
+  border: 1px solid #ccc; border-radius: 20px;
+  font: 14px system-ui, sans-serif; color: #222;
+  pointer-events: none;            /* ne bloque pas le dessin */
+}
+#status button {
+  pointer-events: auto;            /* mais le bouton reste cliquable */
+  border: none; background: #3b6fe0; color: #fff;
+  border-radius: 14px; padding: 4px 10px; cursor: pointer;
+}
+#dot { width: 10px; height: 10px; border-radius: 50%; background: #aaa; }
+#dot.on { background: #2ecc71; }
+
 /* Boutons tactiles (Téléphone et Tablette) */
 @media (pointer: coarse) {
   .toolbar button {
