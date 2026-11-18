@@ -49,7 +49,7 @@ document.querySelectorAll('[data-tool]').forEach((btn) => {
 });
 
 document.getElementById('clear').addEventListener('click', () => {
-    void ctx.clearRect(x, y, largeur, hauteur);
+    void ctx.clearRect(0, 0, canvas.width, canvas.height);
 });
 
 function drawSegment(from, to) {
