@@ -29,8 +29,6 @@ window.addEventListener('resize', resize);
 //   ctx.fill();
 // });
 
-let drawing = false;
-let last = null;
 let tool = 'pencil';
 const colorInput = document.getElementById('color');
 const sizeInput = document.getElementById('size');
@@ -50,6 +48,27 @@ document.querySelectorAll('[data-tool]').forEach((btn) => {
   });
 });
 
+document.getElementById('clear').addEventListener('click', () => {
+    void ctx.clearRect(x, y, largeur, hauteur);
+});
+
+function drawSegment(from, to) {
+  const t = TOOLS[tool];
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.globalAlpha = t.alpha;
+  ctx.lineWidth = sizeInput.value * t.mult;
+  ctx.strokeStyle = colorInput.value;
+
+  ctx.beginPath();
+  ctx.moveTo(from.x, from.y);
+  ctx.lineTo(to.x, to.y);
+  ctx.stroke();
+}
+
+let drawing = false;
+let last = null;
+
 function getPos(e) {
   const rect = canvas.getBoundingClientRect();
   return { x: e.clientX - rect.left, y: e.clientY - rect.top };
@@ -59,19 +78,13 @@ canvas.addEventListener('pointerdown', (e) => {
   drawing = true;
   canvas.setPointerCapture(e.pointerId);
   last = getPos(e);
+  drawSegment(last, last); // un simple clic laisse un point
 });
 
 canvas.addEventListener('pointermove', (e) => {
   if (!drawing) return;
   const p = getPos(e);
-
-  ctx.beginPath();
-  ctx.moveTo(last.x, last.y);
-  ctx.lineTo(p.x, p.y);
-  ctx.stroke();
-  ctx.lineWidth = 1;
-  ctx.lineCap = "round";
-  ctx.strokeStyle = "blue"
+  drawSegment(last, p);
   last = p;
 });
 
