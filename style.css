@@ -31,6 +31,15 @@ html, body {
   padding-left: max(8px, env(safe-area-inset-left));
 }
 
+.toolbar button.active {
+  background: #3b6fe0;
+  color: #fff;
+}
+.toolbar input[type="color"],
+.toolbar input[type="range"] {
+  width: 100%;
+}
+
 .canvas-wrapper {
   flex: 1 1 auto;
   position: relative;

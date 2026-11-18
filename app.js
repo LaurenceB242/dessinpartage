@@ -16,7 +16,9 @@ window.addEventListener('resize', resize);
 // ctx.fillStyle = 'red';
 // ctx.fillRect(20, 20, 100, 100);
 
-//affichage d'un point aux détection du clic
+// affichage d'un point aux détection du clic
+
+// METTRE LA BONNE TAILLE POUR LE POINT ET LE TRACER RENDRE PLUS UNIFORME
 // canvas.addEventListener('pointerdown', (e) => {
 //   const rect = canvas.getBoundingClientRect();
 //   const x = e.clientX - rect.left;
@@ -29,6 +31,24 @@ window.addEventListener('resize', resize);
 
 let drawing = false;
 let last = null;
+let tool = 'pencil';
+const colorInput = document.getElementById('color');
+const sizeInput = document.getElementById('size');
+
+const TOOLS = {
+  pencil: { mult: 0.5, alpha: 1 },
+  brush:  { mult: 2,   alpha: 0.85 },
+  eraser: { mult: 3,   alpha: 1 },
+};
+
+document.querySelectorAll('[data-tool]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    tool = btn.dataset.tool;
+    document.querySelectorAll('[data-tool]').forEach((b) =>
+      b.classList.toggle('active', b === btn)
+    );
+  });
+});
 
 function getPos(e) {
   const rect = canvas.getBoundingClientRect();
@@ -49,7 +69,9 @@ canvas.addEventListener('pointermove', (e) => {
   ctx.moveTo(last.x, last.y);
   ctx.lineTo(p.x, p.y);
   ctx.stroke();
-
+  ctx.lineWidth = 1;
+  ctx.lineCap = "round";
+  ctx.strokeStyle = "blue"
   last = p;
 });
 
