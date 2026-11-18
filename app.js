@@ -12,15 +12,46 @@ function resize() {
 resize();
 window.addEventListener('resize', resize);
 
-// // Rectangle de test
+// Rectangle affiché en rouge
 // ctx.fillStyle = 'red';
 // ctx.fillRect(20, 20, 100, 100);
-canvas.addEventListener('pointerdown', (e) => {
+
+//affichage d'un point aux détection du clic
+// canvas.addEventListener('pointerdown', (e) => {
+//   const rect = canvas.getBoundingClientRect();
+//   const x = e.clientX - rect.left;
+//   const y = e.clientY - rect.top;
+
+//   ctx.beginPath();
+//   ctx.arc(x, y, 3, 0, Math.PI * 2);
+//   ctx.fill();
+// });
+
+let drawing = false;
+let last = null;
+
+function getPos(e) {
   const rect = canvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+  return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+}
+
+canvas.addEventListener('pointerdown', (e) => {
+  drawing = true;
+  canvas.setPointerCapture(e.pointerId);
+  last = getPos(e);
+});
+
+canvas.addEventListener('pointermove', (e) => {
+  if (!drawing) return;
+  const p = getPos(e);
 
   ctx.beginPath();
-  ctx.arc(x, y, 3, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.moveTo(last.x, last.y);
+  ctx.lineTo(p.x, p.y);
+  ctx.stroke();
+
+  last = p;
 });
+
+canvas.addEventListener('pointerup', () => { drawing = false; });
+canvas.addEventListener('pointercancel', () => { drawing = false; });
